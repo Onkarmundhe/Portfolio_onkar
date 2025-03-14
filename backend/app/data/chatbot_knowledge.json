@@ -1,0 +1,99 @@
+{
+  "profile": {
+    "name": "Onkar Arjun Mundhe",
+    "title": "Data and DevOps Intern",
+    "education": "Pursuing Master's in Computer Science at Northeastern University",
+    "location": "Boston, MA",
+    "about": "Passionate about data engineering, cloud technologies, and building scalable applications."
+  },
+  "skills": [
+    {
+      "category": "Programming",
+      "items": [
+        "Python",
+        "JavaScript",
+        "Java",
+        "SQL",
+        "C++"
+      ]
+    },
+    {
+      "category": "Web Development",
+      "items": [
+        "React",
+        "Node.js",
+        "FastAPI",
+        "HTML/CSS"
+      ]
+    },
+    {
+      "category": "Data Engineering",
+      "items": [
+        "Pandas",
+        "NumPy",
+        "Spark",
+        "Hadoop"
+      ]
+    },
+    {
+      "category": "DevOps",
+      "items": [
+        "Docker",
+        "Kubernetes",
+        "CI/CD",
+        "AWS",
+        "Azure"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "title": "Portfolio Website",
+      "description": "A personal portfolio website built with React and FastAPI",
+      "technologies": [
+        "React",
+        "FastAPI",
+        "Docker",
+        "PostgreSQL"
+      ]
+    },
+    {
+      "title": "Data Pipeline Automation",
+      "description": "Automated ETL pipeline for processing large datasets",
+      "technologies": [
+        "Python",
+        "Apache Airflow",
+        "AWS S3",
+        "Redshift"
+      ]
+    },
+    {
+      "title": "Cloud-Native Application",
+      "description": "Microservices-based application deployed on Kubernetes",
+      "technologies": [
+        "Docker",
+        "Kubernetes",
+        "Go",
+        "MongoDB"
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "question": "What are your main skills?",
+      "answer": "My main skills include Python, JavaScript, React, FastAPI, Docker, and cloud technologies like AWS and Azure."
+    },
+    {
+      "question": "What is your educational background?",
+      "answer": "I'm pursuing a Master's degree in Computer Science at Northeastern University."
+    },
+    {
+      "question": "What kind of projects have you worked on?",
+      "answer": "I've worked on web applications, data engineering projects, and cloud-native applications using technologies like React, FastAPI, Docker, and various cloud services."
+    },
+    {
+      "question": "Are you available for hire?",
+      "answer": "I'm currently working as a Data and DevOps Intern, but I'm open to discussing new opportunities. Feel free to contact me through the contact form."
+    }
+  ]
+}

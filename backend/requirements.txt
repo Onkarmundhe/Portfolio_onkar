@@ -1,0 +1,17 @@
+fastapi
+uvicorn
+pydantic
+python-multipart
+python-dotenv
+email-validator
+Jinja2
+aiofiles
+pathlib
+typing-extensions
+google-generativeai
+protobuf
+requests
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
+google-api-python-client

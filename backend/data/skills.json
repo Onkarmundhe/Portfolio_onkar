@@ -1,0 +1,98 @@
+[
+  {
+    "id": 1,
+    "name": "Python",
+    "category": "Programming Languages",
+    "proficiency": 5,
+    "icon": "fab fa-python",
+    "description": "Advanced proficiency in Python for data analysis, automation, and backend development."
+  },
+  {
+    "id": 2,
+    "name": "SQL",
+    "category": "Database",
+    "proficiency": 4,
+    "icon": "fas fa-database",
+    "description": "Experienced in writing complex queries, database design, and optimization."
+  },
+  {
+    "id": 3,
+    "name": "Docker",
+    "category": "DevOps",
+    "proficiency": 5,
+    "icon": "fab fa-docker",
+    "description": "Expert in containerization, creating optimized Docker images, and container orchestration."
+  },
+  {
+    "id": 4,
+    "name": "Kubernetes",
+    "category": "DevOps",
+    "proficiency": 4,
+    "icon": "fas fa-dharmachakra",
+    "description": "Skilled in deploying and managing containerized applications at scale."
+  },
+  {
+    "id": 5,
+    "name": "AWS",
+    "category": "Cloud",
+    "proficiency": 4,
+    "icon": "fab fa-aws",
+    "description": "Proficient in various AWS services including EC2, S3, RDS, Lambda, and more."
+  },
+  {
+    "id": 6,
+    "name": "Terraform",
+    "category": "Infrastructure as Code",
+    "proficiency": 3,
+    "icon": "fas fa-network-wired",
+    "description": "Experience with infrastructure as code for cloud provisioning and management."
+  },
+  {
+    "id": 7,
+    "name": "Git",
+    "category": "Version Control",
+    "proficiency": 5,
+    "icon": "fab fa-git-alt",
+    "description": "Advanced knowledge of Git workflows, branching strategies, and collaboration."
+  },
+  {
+    "id": 8,
+    "name": "Pandas",
+    "category": "Data Analysis",
+    "proficiency": 5,
+    "icon": "fas fa-table",
+    "description": "Expert in data manipulation, analysis, and visualization with Pandas."
+  },
+  {
+    "id": 9,
+    "name": "TensorFlow",
+    "category": "Machine Learning",
+    "proficiency": 3,
+    "icon": "fas fa-brain",
+    "description": "Working knowledge of building and training neural networks for various applications."
+  },
+  {
+    "id": 10,
+    "name": "Flask/FastAPI",
+    "category": "Web Frameworks",
+    "proficiency": 4,
+    "icon": "fas fa-server",
+    "description": "Experienced in building RESTful APIs and web applications with Python frameworks."
+  },
+  {
+    "id": 11,
+    "name": "Linux",
+    "category": "Operating Systems",
+    "proficiency": 4,
+    "icon": "fab fa-linux",
+    "description": "Strong command of Linux administration, shell scripting, and system configuration."
+  },
+  {
+    "id": 12,
+    "name": "CI/CD",
+    "category": "DevOps",
+    "proficiency": 4,
+    "icon": "fas fa-sync",
+    "description": "Experience with implementing continuous integration and deployment pipelines."
+  }
+] 

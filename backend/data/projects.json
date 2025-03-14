@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "title": "Data Analytics Dashboard",
+    "description": "Developed a comprehensive data analytics dashboard for monitoring key performance metrics. This project involved data processing, visualization, and real-time updates.",
+    "image_url": "/assets/projects/data-dashboard.jpg",
+    "project_url": "https://data-dashboard.example.com",
+    "github_url": "https://github.com/Onkarmundhe/data-dashboard",
+    "tech_stack": ["Python", "Pandas", "Flask", "D3.js", "PostgreSQL"],
+    "start_date": "2023-06-01",
+    "end_date": "2023-08-15",
+    "is_featured": true
+  },
+  {
+    "id": 2,
+    "title": "DevOps Automation Pipeline",
+    "description": "Implemented a CI/CD pipeline for automating software deployment. This project streamlined the development workflow and reduced deployment times by 70%.",
+    "image_url": "/assets/projects/devops-pipeline.jpg",
+    "project_url": null,
+    "github_url": "https://github.com/Onkarmundhe/devops-pipeline",
+    "tech_stack": ["Jenkins", "Docker", "Kubernetes", "Terraform", "AWS"],
+    "start_date": "2023-09-01",
+    "end_date": "2023-11-30",
+    "is_featured": true
+  },
+  {
+    "id": 3,
+    "title": "Machine Learning Model for Predictive Maintenance",
+    "description": "Developed a machine learning model to predict equipment failures before they occur. The model achieved 92% accuracy in predicting failures 48 hours in advance.",
+    "image_url": "/assets/projects/ml-maintenance.jpg",
+    "project_url": null,
+    "github_url": "https://github.com/Onkarmundhe/predictive-maintenance",
+    "tech_stack": ["Python", "Scikit-learn", "TensorFlow", "Jupyter", "NumPy"],
+    "start_date": "2023-12-01",
+    "end_date": "2024-02-15",
+    "is_featured": false
+  },
+  {
+    "id": 4,
+    "title": "Cloud Infrastructure Migration",
+    "description": "Led a project to migrate on-premises infrastructure to the cloud. This involved designing the cloud architecture, implementing security measures, and ensuring minimal downtime during the transition.",
+    "image_url": "/assets/projects/cloud-migration.jpg",
+    "project_url": null,
+    "github_url": "https://github.com/Onkarmundhe/cloud-migration",
+    "tech_stack": ["AWS", "Azure", "Terraform", "Docker", "Ansible"],
+    "start_date": "2024-03-01",
+    "end_date": null,
+    "is_featured": true
+  }
+] 
