@@ -119,7 +119,7 @@ const Skills = () => {
           Object.entries(skillsByCategory).map(([category, skills]) => (
             <CategorySection key={category}>
               <CategoryTitle>{category}</CategoryTitle>
-              <SkillsList skillsByCategory={skillsByCategory} />
+              <SkillsList skillsByCategory={{ [category]: skills }} />
             </CategorySection>
           ))
         )}
