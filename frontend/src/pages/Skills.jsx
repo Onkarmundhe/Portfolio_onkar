@@ -77,6 +77,10 @@ const Skills = () => {
     const fetchSkills = async () => {
       try {
         const data = await getSkillsByCategory();
+        console.log('Fetched skills data:', data);
+        if (!data || !Array.isArray(data)) {
+          throw new Error('Invalid skills data format');
+        }
         setCategories(data);
       } catch (error) {
         console.error('Error fetching skills:', error);
@@ -88,6 +92,8 @@ const Skills = () => {
 
     fetchSkills();
   }, []);
+
+  console.log('Current categories:', categories);
 
   return (
     <SkillsPageContainer>
@@ -115,11 +121,13 @@ const Skills = () => {
           <LoadingMessage>Loading skills...</LoadingMessage>
         ) : error ? (
           <ErrorMessage>{error}</ErrorMessage>
+        ) : categories.length === 0 ? (
+          <ErrorMessage>No skills found.</ErrorMessage>
         ) : (
           categories.map(category => (
             <CategorySection key={category.name}>
               <CategoryTitle>{category.name}</CategoryTitle>
-              <SkillsList skills={category.skills} />
+              <SkillsList skills={category.skills || []} />
             </CategorySection>
           ))
         )}

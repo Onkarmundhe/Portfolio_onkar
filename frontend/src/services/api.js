@@ -3,11 +3,14 @@ import { projects } from './projectsData';
 
 // Create axios instance with base URL
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:8000',
   headers: {
     'Content-Type': 'application/json',
   },
 });
+
+// Log the base URL for debugging
+console.log('API Base URL:', api.defaults.baseURL);
 
 // Static fallback data for skills
 const staticSkillsData = {
@@ -100,10 +103,17 @@ export const getSkills = async () => {
 export const getSkillsByCategory = async () => {
   try {
     const response = await api.get('/skills/categories');
-    return response.data.categories || [];
+    console.log('API Response:', response.data);
+    // If API fails, use static data
+    if (!response.data || !response.data.categories) {
+      console.log('Using static data');
+      return staticSkillsData.categories;
+    }
+    return response.data.categories;
   } catch (error) {
-    console.error('Error fetching skills by category:', error);
+    console.error('Error fetching skills:', error);
     // Fallback to static data if API fails
+    console.log('Using static data due to error');
     return staticSkillsData.categories;
   }
 };
