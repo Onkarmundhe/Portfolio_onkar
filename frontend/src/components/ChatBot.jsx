@@ -76,19 +76,6 @@ const IconButton = styled.button`
   }
 `;
 
-const CloseButton = styled.button`
-  background: none;
-  border: none;
-  color: var(--text-secondary);
-  cursor: pointer;
-  font-size: 1.2rem;
-  padding: 5px;
-  
-  &:hover {
-    color: var(--text-primary);
-  }
-`;
-
 const ChatMessages = styled.div`
   flex: 1;
   overflow-y: auto;
