@@ -350,49 +350,21 @@ const ChatBot = () => {
   };
   
   const sendMessage = async (text) => {
-    setIsLoading(true);
-    
     try {
-      // First check if we can handle this with a local response
-      const localResponse = getLocalResponse(text);
-      
-      if (localResponse) {
-        // Short delay to make it feel more natural
-        setTimeout(() => {
-          setMessages(prev => [...prev, { text: localResponse, isUser: false, showSuggestions: false }]);
-          setIsLoading(false);
-        }, 600);
-        return;
-      }
-      
-      // If no local response, use API
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000);
-      
-      const response = await axios.post('/api/chatbot/chat', {
+      setIsLoading(true);
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/chatbot/chat`, {
         message: text
-      }, { signal: controller.signal });
+      });
       
-      clearTimeout(timeoutId);
-      
-      setMessages(prev => [...prev, { text: response.data.response, isUser: false, showSuggestions: false }]);
-      setErrorCount(0); // Reset error count on successful response
+      if (response.data && response.data.response) {
+        setMessages(prev => [...prev, { text: response.data.response, isUser: false }]);
+      } else {
+        throw new Error('Invalid response format');
+      }
     } catch (error) {
       console.error('Error sending message:', error);
-      
-      // Increment error counter
-      const newErrorCount = errorCount + 1;
-      setErrorCount(newErrorCount);
-      
-      // Different error messages based on number of consecutive errors
-      let errorMessage = "I'm having trouble connecting right now. Please try again later.";
-      
-      if (newErrorCount >= 3) {
-        errorMessage = "I'm experiencing technical difficulties. Please try again later or check out Onkar's projects directly from the Projects page.";
-      }
-      
       setMessages(prev => [...prev, {
-        text: errorMessage,
+        text: "I'm having trouble connecting right now. Please try again later.",
         isUser: false,
         isError: true
       }]);

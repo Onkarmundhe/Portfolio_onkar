@@ -178,17 +178,47 @@ const ContactForm = () => {
     setIsSubmitting(true);
     setStatus({ type: '', message: '' });
 
-    try {
-      await axios.post(`${process.env.REACT_APP_API_URL}/api/contact/submit`, formData);
-      setStatus({
-        type: 'success',
-        message: 'Message sent successfully! I will get back to you soon.'
-      });
-      setFormData({ name: '', email: '', subject: '', message: '' });
-    } catch (error) {
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
       setStatus({
         type: 'error',
-        message: 'Failed to send message. Please try again later.'
+        message: 'Please enter a valid email address.'
+      });
+      setIsSubmitting(false);
+      return;
+    }
+
+    // Validate required fields
+    if (!formData.name || !formData.email || !formData.subject || !formData.message) {
+      setStatus({
+        type: 'error',
+        message: 'All fields are required.'
+      });
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/contact/submit`, {
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        subject: formData.subject.trim(),
+        message: formData.message.trim()
+      });
+
+      if (response.data && response.data.message) {
+        setStatus({
+          type: 'success',
+          message: response.data.message
+        });
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      }
+    } catch (error) {
+      console.error('Contact form error:', error);
+      setStatus({
+        type: 'error',
+        message: error.response?.data?.detail || 'Failed to send message. Please try again later.'
       });
     } finally {
       setIsSubmitting(false);
