@@ -6,6 +6,7 @@ from datetime import datetime
 import os
 from dotenv import load_dotenv
 import logging
+import json
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -29,9 +30,14 @@ RANGE_NAME = 'Sheet1!A:D'  # Assuming columns: Timestamp, Name, Email, Subject, 
 
 def get_sheets_service():
     try:
-        # Get credentials from service account file
-        creds = service_account.Credentials.from_service_account_file(
-            'service-account.json', scopes=SCOPES)
+        # Get credentials from environment variable
+        creds_json = os.getenv('GOOGLE_APPLICATION_CREDENTIALS_JSON')
+        if not creds_json:
+            raise ValueError("Google credentials not found in environment variables")
+        
+        creds_dict = json.loads(creds_json)
+        creds = service_account.Credentials.from_service_account_info(
+            creds_dict, scopes=SCOPES)
         
         # Build the Sheets API service
         service = build('sheets', 'v4', credentials=creds)
