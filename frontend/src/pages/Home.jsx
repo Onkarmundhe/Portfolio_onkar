@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet';
-import ProjectCard from '../components/ProjectCard';
-import { getFeaturedProjects } from '../services/api';
 
 // Styled Components
 const HomeContainer = styled.div`
@@ -21,7 +19,51 @@ const HeroSection = styled.section`
 `;
 
 const HeroContent = styled.div`
-  max-width: 800px;
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 50px;
+  max-width: 1000px;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const TextContent = styled.div`
+  max-width: 600px;
+`;
+
+const ProfileImage = styled.div`
+  position: relative;
+  margin-top: -20px;
+  
+  @media (max-width: 768px) {
+    margin: 20px auto 0;
+    width: 70%;
+    max-width: 200px;
+  }
+  
+  @media (max-width: 480px) {
+    width: 80%;
+  }
+  
+  .wrapper {
+    position: relative;
+    width: 100%;
+    padding-top: 100%;
+    overflow: hidden;
+    border-radius: 50%;
+  }
+  
+  img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
 `;
 
 const Greeting = styled(motion.h3)`
@@ -62,78 +104,53 @@ const Description = styled(motion.p)`
 
 const CTAButton = styled(motion.a)`
   display: inline-block;
-  background-color: var(--accent-color);
-  color: white;
-  padding: 0.8rem 1.5rem;
-  border-radius: 4px;
-  font-weight: 500;
-  text-decoration: none;
+  background-color: transparent;
+  color: var(--accent-color);
+  padding: 0.8rem 1.8rem;
   font-size: 1.1rem;
+  border: 2px solid var(--accent-color);
+  border-radius: 4px;
+  font-weight: 600;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: var(--accent-color);
+    transition: all 0.4s cubic-bezier(0.42, 0, 0.58, 1);
+    z-index: -1;
+  }
   
   &:hover {
-    background-color: var(--accent-hover);
+    color: ${props => props.theme === 'light' ? 'white' : 'var(--primary-color)'};
+    transform: translateY(-5px);
+    box-shadow: 0 7px 20px rgba(0, 0, 0, 0.15);
+    
+    &:before {
+      width: 100%;
+    }
+  }
+  
+  &:active {
     transform: translateY(-2px);
   }
 `;
 
-const FeaturedSection = styled.section`
-  margin-bottom: 4rem;
-`;
-
-const SectionTitle = styled.h2`
-  font-size: 2rem;
-  margin-bottom: 2rem;
-  position: relative;
-  display: inline-block;
-  
-  &:after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 0;
-    width: 60%;
-    height: 3px;
-    background-color: var(--accent-color);
-  }
-`;
-
-const ProjectsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2rem;
-  
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
-const LoadingMessage = styled.div`
-  text-align: center;
-  padding: 2rem;
-  font-size: 1.2rem;
-  color: var(--text-secondary);
-`;
-
 const Home = () => {
-  const [featuredProjects, setFeaturedProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchFeaturedProjects = async () => {
-      try {
-        const data = await getFeaturedProjects();
-        setFeaturedProjects(data);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching featured projects:', error);
-        setLoading(false);
-      }
-    };
-
-    fetchFeaturedProjects();
-  }, []);
-
+  // Get the current theme from data-theme attribute
+  const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+  
   return (
     <HomeContainer>
       <Helmet>
@@ -143,60 +160,61 @@ const Home = () => {
 
       <HeroSection>
         <HeroContent>
-          <Greeting
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            Hello, I'm
-          </Greeting>
-          <Name
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
-            Onkar Arjun Mundhe
-          </Name>
-          <Subtitle
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            Data and DevOps Intern
-          </Subtitle>
-          <Description
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
-            Final year student at IIT Goa with experience in data analysis, machine learning, and DevOps practices. 
-            Currently working at Predusk Technology Pvt. Ltd., where I develop and maintain data pipelines and infrastructure.
-          </Description>
-          <CTAButton
-            href="/contact"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Get in Touch
-          </CTAButton>
+          <TextContent>
+            <Greeting
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              Hello, I'm
+            </Greeting>
+            <Name
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              Onkar Arjun Mundhe
+            </Name>
+            <Subtitle
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              Data and DevOps Intern
+            </Subtitle>
+            <Description
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
+              I'm a final year student at the Indian Institute of Technology Goa. 
+              Currently, I'm applying my skills as a Data and DevOps Intern at Process Venue, where I get to build and maintain data pipelines and work with AI agents.
+            </Description>
+            <CTAButton
+              href="/contact"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              theme={currentTheme}
+            >
+              Get in Touch
+            </CTAButton>
+          </TextContent>
+          
+          <ProfileImage>
+            <motion.div 
+              className="wrapper"
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <img src="/assets/my_image.jpg" alt="Profile" />
+            </motion.div>
+          </ProfileImage>
         </HeroContent>
       </HeroSection>
-
-      {/* <FeaturedSection>
-        <SectionTitle>Featured Projects</SectionTitle>
-        {loading ? (
-          <LoadingMessage>Loading featured projects...</LoadingMessage>
-        ) : (
-          <ProjectsGrid>
-            {featuredProjects.map((project) => (
-              <ProjectCard key={project.id} project={project} />
-            ))}
-          </ProjectsGrid>
-        )}
-      </FeaturedSection> */}
     </HomeContainer>
   );
 };

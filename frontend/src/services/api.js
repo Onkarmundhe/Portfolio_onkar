@@ -18,34 +18,39 @@ const staticSkillsData = {
         {"id": 1, "name": "Python", "level": 90, "proficiency": 4.5, "description": "Expertise in data processing, APIs, and automation", "icon": "fab fa-python"},
         {"id": 2, "name": "JavaScript", "level": 85, "proficiency": 4.2, "description": "Web development, frontend and Node.js", "icon": "fab fa-js"},
         {"id": 3, "name": "HTML/CSS", "level": 80, "proficiency": 4.0, "description": "Creating responsive and accessible web interfaces", "icon": "fab fa-html5"},
-        {"id": 4, "name": "C++", "level": 75, "proficiency": 3.7, "description": "System programming and embedded applications", "icon": "fas fa-code"}
+        {"id": 4, "name": "C++", "level": 75, "proficiency": 3.7, "description": "System programming and embedded applications", "icon": "fas fa-code"},
+        {"id": 5, "name": "C", "level": 70, "proficiency": 3.5, "description": "Low-level programming and system development", "icon": "fas fa-code"}
       ]
     },
     {
       "name": "DevOps & Tools",
       "skills": [
-        {"id": 5, "name": "Git", "level": 85, "proficiency": 4.2, "description": "Version control and collaborative development", "icon": "fab fa-git-alt"},
-        {"id": 6, "name": "Docker", "level": 80, "proficiency": 4.0, "description": "Container creation and orchestration", "icon": "fab fa-docker"},
-        {"id": 7, "name": "CI/CD", "level": 75, "proficiency": 3.7, "description": "Automated testing and deployment pipelines", "icon": "fas fa-sync-alt"},
-        {"id": 8, "name": "AWS", "level": 70, "proficiency": 3.5, "description": "Cloud infrastructure and serverless applications", "icon": "fab fa-aws"}
+        {"id": 6, "name": "Git", "level": 85, "proficiency": 4.2, "description": "Version control and collaborative development", "icon": "fab fa-git-alt"},
+        {"id": 7, "name": "AWS", "level": 80, "proficiency": 4.0, "description": "Cloud infrastructure and serverless applications", "icon": "fab fa-aws"},
+        {"id": 8, "name": "Selenium", "level": 70, "proficiency": 3.5, "description": "Automated testing and web scraping", "icon": "fas fa-vial"},
+        {"id": 9, "name": "Deployment on VM", "level": 75, "proficiency": 3.7, "description": "Virtual machine configuration and application deployment", "icon": "fas fa-server"}
       ]
     },
     {
       "name": "Data & Analytics",
       "skills": [
-        {"id": 9, "name": "Data Analysis", "level": 85, "proficiency": 4.2, "description": "Processing and deriving insights from data", "icon": "fas fa-chart-bar"},
-        {"id": 10, "name": "SQL", "level": 80, "proficiency": 4.0, "description": "Database design and complex queries", "icon": "fas fa-database"},
-        {"id": 11, "name": "Machine Learning", "level": 75, "proficiency": 3.7, "description": "Predictive models and data classification", "icon": "fas fa-brain"},
-        {"id": 12, "name": "Data Visualization", "level": 70, "proficiency": 3.5, "description": "Creating insightful visual representations", "icon": "fas fa-chart-line"}
+        {"id": 10, "name": "SQL", "level": 85, "proficiency": 4.2, "description": "Database design and complex queries", "icon": "fas fa-database"},
+        {"id": 11, "name": "Machine Learning", "level": 80, "proficiency": 4.0, "description": "Predictive models and data classification", "icon": "fas fa-brain"}
       ]
     },
     {
       "name": "Web Technologies",
       "skills": [
-        {"id": 13, "name": "React.js", "level": 80, "proficiency": 4.0, "description": "Building interactive user interfaces", "icon": "fab fa-react"},
-        {"id": 14, "name": "Node.js", "level": 75, "proficiency": 3.7, "description": "Server-side JavaScript applications", "icon": "fab fa-node-js"},
-        {"id": 15, "name": "RESTful APIs", "level": 85, "proficiency": 4.2, "description": "Designing and consuming web APIs", "icon": "fas fa-plug"},
-        {"id": 16, "name": "FastAPI", "level": 80, "proficiency": 4.0, "description": "High-performance Python web frameworks", "icon": "fas fa-bolt"}
+        {"id": 12, "name": "React.js", "level": 85, "proficiency": 4.2, "description": "Building interactive user interfaces", "icon": "fab fa-react"},
+        {"id": 13, "name": "Node.js", "level": 80, "proficiency": 4.0, "description": "Server-side JavaScript applications", "icon": "fab fa-node-js"},
+        {"id": 14, "name": "FastAPI", "level": 85, "proficiency": 4.2, "description": "High-performance Python web frameworks", "icon": "fas fa-bolt"},
+        {"id": 15, "name": "Streamlit", "level": 80, "proficiency": 4.0, "description": "Data applications and interactive dashboards", "icon": "fas fa-chart-line"}
+      ]
+    },
+    {
+      "name": "Artificial Intelligence",
+      "skills": [
+        {"id": 16, "name": "AI Agents", "level": 80, "proficiency": 4.0, "description": "Developing intelligent automated agents", "icon": "fas fa-robot"}
       ]
     }
   ]
@@ -81,7 +86,7 @@ export const getProjectById = async (id) => {
 // Skills API
 export const getSkills = async () => {
   try {
-    const response = await api.get('/skills');
+    const response = await api.get('/skills/all');
     return response.data;
   } catch (error) {
     console.error('Error fetching skills:', error);
@@ -96,20 +101,34 @@ export const getSkillsByCategory = async () => {
   try {
     const response = await api.get('/skills/categories');
     // Format the data to match what the component expects
-    const categoriesData = response.data.categories.reduce((acc, category) => {
-      acc[category.name] = category.skills;
-      return acc;
-    }, {});
-    return categoriesData;
+    return formatCategoriesData(response.data);
   } catch (error) {
     console.error('Error fetching skills by category:', error);
     // Fallback to static data if API fails
-    const formattedData = staticSkillsData.categories.reduce((acc, category) => {
+    return Promise.resolve(formatStaticCategoriesData());
+  }
+};
+
+// Helper function to format categories data
+const formatCategoriesData = (data) => {
+  if (data && data.categories) {
+    // Format data from the /skills/categories endpoint
+    return data.categories.reduce((acc, category) => {
       acc[category.name] = category.skills;
       return acc;
     }, {});
-    return Promise.resolve(formattedData);
+  } else {
+    // Format data from the /skills/by-category endpoint (added for compatibility)
+    return data;
   }
+};
+
+// Helper function to format static data
+const formatStaticCategoriesData = () => {
+  return staticSkillsData.categories.reduce((acc, category) => {
+    acc[category.name] = category.skills;
+    return acc;
+  }, {});
 };
 
 // Contact API

@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRobot, faPaperPlane, faTimes, faExclamationTriangle, faRedo } from '@fortawesome/free-solid-svg-icons';
+import { faRobot, faPaperPlane, faTimes, faExclamationTriangle, faRedo, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 
 const ChatbotContainer = styled.div`
@@ -56,6 +56,24 @@ const ChatTitle = styled.h3`
   display: flex;
   align-items: center;
   gap: 8px;
+`;
+
+const HeaderButtons = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
+const IconButton = styled.button`
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 5px;
+  
+  &:hover {
+    color: var(--text-primary);
+  }
 `;
 
 const CloseButton = styled.button`
@@ -188,12 +206,13 @@ const TypingIndicator = styled.div`
   }
 `;
 
-// Common questions that the user might want to ask
+// Updated suggested questions with current information
 const SUGGESTED_QUESTIONS = [
   "Tell me about Onkar's projects",
   "What skills does Onkar have?",
   "Where did Onkar study?",
-  "What is Onkar's work experience?"
+  "What is Onkar's work experience at Process Venue?",
+  "How can I contact Onkar?"
 ];
 
 const SuggestedQuestions = styled.div`
@@ -218,6 +237,41 @@ const SuggestedQuestion = styled.button`
   }
 `;
 
+// Personal information that can be used for direct responses without API call
+const PERSONAL_INFO = {
+  name: "Onkar Arjun Mundhe",
+  education: "Final year student at the Indian Institute of Technology Goa",
+  position: "Data and DevOps Intern at Process Venue",
+  skills: [
+    "Python", "JavaScript", "React", "Data Analysis", 
+    "Machine Learning", "DevOps Practices", "Data Pipelines", "AI Agents"
+  ],
+  experience: "Building and maintaining data pipelines and working with AI agents at Process Venue",
+  greetings: [
+    "Hello! I'm Onkar's portfolio assistant. How can I help you learn more about him?",
+    "Hi there! I can tell you all about Onkar's skills and experience. What would you like to know?",
+    "Greetings! I'm here to share information about Onkar Arjun Mundhe. How may I assist you?",
+    "Welcome! I'm Onkar's AI assistant. Feel free to ask me about his projects, skills, or background."
+  ]
+};
+
+// Function to get a random greeting
+const getRandomGreeting = () => {
+  const randomIndex = Math.floor(Math.random() * PERSONAL_INFO.greetings.length);
+  return PERSONAL_INFO.greetings[randomIndex];
+};
+
+// Local fallback responses for quick replies and error cases
+const LOCAL_RESPONSES = {
+  greeting: () => getRandomGreeting(),
+  skills: () => `Onkar's key skills include: ${PERSONAL_INFO.skills.join(', ')}.`,
+  education: () => `Onkar is a ${PERSONAL_INFO.education}.`,
+  experience: () => `Onkar is currently working as a ${PERSONAL_INFO.position}, where he focuses on ${PERSONAL_INFO.experience}.`,
+  projects: () => `You can view Onkar's projects in the Projects section of this portfolio. He has experience with data pipelines, AI agents, and various web technologies.`,
+  contact: () => `You can reach out to Onkar through the Contact page of this portfolio.`,
+  default: () => `I'm Onkar's portfolio assistant. I can provide information about his education, experience, skills, and projects. How can I help you today?`
+};
+
 const ChatBot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
@@ -234,7 +288,7 @@ const ChatBot = () => {
     if (isOpen && messages.length === 0) {
       setMessages([
         {
-          text: "Hi! I'm Onkar's portfolio assistant. I can help you learn more about his education, experience, skills, and projects. What would you like to know?",
+          text: getRandomGreeting(),
           isUser: false,
           showSuggestions: true
         }
@@ -247,6 +301,17 @@ const ChatBot = () => {
     setIsOpen(!isOpen);
   };
   
+  const clearChat = () => {
+    setMessages([
+      {
+        text: getRandomGreeting(),
+        isUser: false,
+        showSuggestions: true
+      }
+    ]);
+    setErrorCount(0);
+  };
+  
   const handleSuggestedQuestion = (question) => {
     handleSendMessage(question);
   };
@@ -257,12 +322,63 @@ const ChatBot = () => {
       sendMessage(lastUserMessage.text);
     }
   };
+
+  // Local response matching for faster responses and backup
+  const getLocalResponse = (text) => {
+    const message = text.toLowerCase();
+    
+    // Check for greetings
+    if (/^(hi|hello|hey|greetings|howdy)( there)?(!|\.|$|\s)/.test(message)) {
+      return LOCAL_RESPONSES.greeting();
+    }
+    
+    // Check for skills questions
+    if (/(what|which|tell me about|list) (your|onkar'?s)? skills/.test(message) ||
+        /(skills|technologies|tech stack)/.test(message)) {
+      return LOCAL_RESPONSES.skills();
+    }
+    
+    // Check for education questions
+    if (/(education|study|college|university|school|iit)/.test(message)) {
+      return LOCAL_RESPONSES.education();
+    }
+    
+    // Check for experience questions
+    if (/(experience|work|job|intern|process venue)/.test(message)) {
+      return LOCAL_RESPONSES.experience();
+    }
+    
+    // Check for project questions
+    if (/(projects?|portfolio|work|built|developed|created)/.test(message)) {
+      return LOCAL_RESPONSES.projects();
+    }
+    
+    // Check for contact questions
+    if (/(contact|email|reach|get in touch)/.test(message)) {
+      return LOCAL_RESPONSES.contact();
+    }
+    
+    // Default to API response
+    return null;
+  };
   
   const sendMessage = async (text) => {
     setIsLoading(true);
     
     try {
-      // Set a timeout for the API call
+      // First check if we can handle this with a local response
+      const localResponse = getLocalResponse(text);
+      
+      if (localResponse) {
+        // Short delay to make it feel more natural
+        setTimeout(() => {
+          setMessages(prev => [...prev, { text: localResponse, isUser: false, showSuggestions: false }]);
+          setIsLoading(false);
+        }, 600);
+        return;
+      }
+      
+      // If no local response, use API
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000);
       
@@ -335,9 +451,14 @@ const ChatBot = () => {
               <ChatTitle>
                 <FontAwesomeIcon icon={faRobot} /> Portfolio Assistant
               </ChatTitle>
-              <CloseButton onClick={toggleChat}>
-                <FontAwesomeIcon icon={faTimes} />
-              </CloseButton>
+              <HeaderButtons>
+                <IconButton onClick={clearChat} title="Clear chat">
+                  <FontAwesomeIcon icon={faTrashAlt} />
+                </IconButton>
+                <IconButton onClick={toggleChat} title="Close chat">
+                  <FontAwesomeIcon icon={faTimes} />
+                </IconButton>
+              </HeaderButtons>
             </ChatHeader>
             
             <ChatMessages>

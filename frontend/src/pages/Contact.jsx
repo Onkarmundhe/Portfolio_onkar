@@ -131,8 +131,8 @@ const Contact = () => {
               transition={{ duration: 0.5 }}
             >
               <p>
-                I'm currently looking for new opportunities and would love to hear from you. 
-                Whether you have a question, want to collaborate on a project, or just want to say hi, 
+                I'm always open to connecting with tech enthusiasts and professionals in the data science and DevOps space.  
+                Whether you have a questions about my work, want to collaborate on a project, or just want to say hi, Feel free to reach out, and  
                 I'll do my best to get back to you!
               </p>
               
@@ -153,7 +153,7 @@ const Contact = () => {
                   </div>
                   <div className="details">
                     <h4>Location</h4>
-                    <p>Goa, India</p>
+                    <p>Pune, India</p>
                   </div>
                 </ContactMethod>
               </ContactMethods>

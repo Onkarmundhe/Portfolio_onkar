@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMoon, faSun, faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { useTheme } from '../context/ThemeContext';
 
 const StyledHeader = styled.header`
   position: fixed;
   top: 0;
   width: 100%;
   height: var(--nav-height);
-  background-color: rgba(10, 25, 47, 0.85);
+  background-color: ${props => props.isDarkMode 
+    ? 'rgba(10, 25, 47, 0.85)' 
+    : 'rgba(249, 249, 249, 0.85)'};
   backdrop-filter: blur(10px);
   z-index: 100;
   transition: var(--transition);
@@ -17,7 +21,7 @@ const StyledHeader = styled.header`
 
 const Nav = styled.nav`
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
   height: 100%;
@@ -37,15 +41,50 @@ const NavLinks = styled.div`
 `;
 
 const NavLink = styled(Link)`
-  margin: 0 15px;
+  margin: 0 10px;
   color: var(--text-primary);
   font-size: 1rem;
   text-decoration: none;
   transition: var(--transition);
+  padding: 8px 15px;
+  border: 2px solid transparent;
+  border-radius: 8px;
   
   &:hover, &.active {
     color: var(--secondary-color);
+    border-color: var(--secondary-color);
     text-decoration: none;
+  }
+`;
+
+const ThemeButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+  
+  @media (max-width: 768px) {
+    margin-right: 60px;
+  }
+`;
+
+const ThemeButton = styled.button`
+  background: transparent;
+  color: var(--text-primary);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  
+  &:hover {
+    color: var(--secondary-color);
+    transform: rotate(12deg);
+    border: 2px solid var(--secondary-color);
   }
 `;
 
@@ -58,9 +97,19 @@ const MobileMenuButton = styled.button`
   z-index: 11;
   position: absolute;
   right: 20px;
+  border: 2px solid transparent;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  
+  &:hover {
+    border-color: var(--secondary-color);
+  }
   
   @media (max-width: 768px) {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 `;
 
@@ -93,10 +142,25 @@ const MobileNavLink = styled(Link)`
   font-size: 1.2rem;
   text-decoration: none;
   transition: var(--transition);
+  padding: 8px 15px;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  width: 80%;
+  text-align: center;
   
   &:hover, &.active {
     color: var(--secondary-color);
+    border-color: var(--secondary-color);
     text-decoration: none;
+  }
+`;
+
+const MobileThemeButton = styled(ThemeButton)`
+  margin-top: 20px;
+  border: 2px solid transparent;
+  
+  &:hover {
+    border: 2px solid var(--secondary-color);
   }
 `;
 
@@ -116,6 +180,7 @@ const Header = () => {
   const [scrollDirection, setScrollDirection] = useState('none');
   const [prevScrollY, setPrevScrollY] = useState(0);
   const location = useLocation();
+  const { isDarkMode, toggleTheme } = useTheme();
   
   // Handle scroll direction for hiding/showing header
   useEffect(() => {
@@ -150,24 +215,38 @@ const Header = () => {
   };
   
   return (
-    <StyledHeader style={{ transform: scrollDirection === 'down' ? 'translateY(-100%)' : 'translateY(0)' }}>
+    <StyledHeader 
+      style={{ transform: scrollDirection === 'down' ? 'translateY(-100%)' : 'translateY(0)' }}
+      isDarkMode={isDarkMode}
+    >
       <Nav>
         <NavLinks>
           <NavLink to="/" className={location.pathname === '/' ? 'active' : ''}>Home</NavLink>
           <NavLink to="/about" className={location.pathname === '/about' ? 'active' : ''}>About</NavLink>
+          <NavLink to="/skills" className={location.pathname === '/skills' ? 'active' : ''}>Skills</NavLink>
           <NavLink to="/projects" className={location.pathname === '/projects' ? 'active' : ''}>Projects</NavLink>
           <NavLink to="/contact" className={location.pathname === '/contact' ? 'active' : ''}>Contact</NavLink>
         </NavLinks>
         
+        <ThemeButtonContainer>
+          <ThemeButton onClick={toggleTheme} aria-label="Toggle theme">
+            <FontAwesomeIcon icon={isDarkMode ? faSun : faMoon} />
+          </ThemeButton>
+        </ThemeButtonContainer>
+        
         <MobileMenuButton onClick={toggleMenu}>
-          <i className={isMenuOpen ? 'fas fa-times' : 'fas fa-bars'} />
+          <FontAwesomeIcon icon={isMenuOpen ? faTimes : faBars} />
         </MobileMenuButton>
         
         <MobileMenu isOpen={isMenuOpen}>
           <MobileNavLink to="/" className={location.pathname === '/' ? 'active' : ''}>Home</MobileNavLink>
           <MobileNavLink to="/about" className={location.pathname === '/about' ? 'active' : ''}>About</MobileNavLink>
+          <MobileNavLink to="/skills" className={location.pathname === '/skills' ? 'active' : ''}>Skills</MobileNavLink>
           <MobileNavLink to="/projects" className={location.pathname === '/projects' ? 'active' : ''}>Projects</MobileNavLink>
           <MobileNavLink to="/contact" className={location.pathname === '/contact' ? 'active' : ''}>Contact</MobileNavLink>
+          <MobileThemeButton onClick={toggleTheme} aria-label="Toggle theme">
+            <FontAwesomeIcon icon={isDarkMode ? faSun : faMoon} />
+          </MobileThemeButton>
         </MobileMenu>
         
         <Overlay isOpen={isMenuOpen} onClick={toggleMenu} />

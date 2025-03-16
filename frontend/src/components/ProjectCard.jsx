@@ -12,14 +12,17 @@ const Card = styled(motion.div)`
   width: 100%;
   height: 100%;
   min-height: 320px;
-  padding: 25px;
-  border-radius: var(--border-radius);
+  padding: 30px;
+  border-radius: 8px;
   background-color: var(--background-light);
   box-shadow: 0 10px 30px -15px rgba(2, 12, 27, 0.7);
-  transition: var(--transition);
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
   
   &:hover {
-    transform: translateY(-7px);
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px -20px rgba(2, 12, 27, 0.8);
+    border: 1px solid rgba(100, 255, 218, 0.2);
   }
 `;
 
@@ -33,7 +36,20 @@ const ProjectHeader = styled.div`
 const ProjectTitle = styled.h3`
   margin: 0;
   color: var(--text-primary);
-  font-size: 1.5rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  position: relative;
+  padding-bottom: 8px;
+  
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 2px;
+    background: linear-gradient(to right, var(--secondary-color), transparent);
+  }
 `;
 
 const ProjectLinks = styled.div`
@@ -41,21 +57,24 @@ const ProjectLinks = styled.div`
 `;
 
 const ProjectLink = styled.a`
-  margin-left: 15px;
+  margin-left: 18px;
   color: var(--text-primary);
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   transition: var(--transition);
+  opacity: 0.8;
   
   &:hover {
     color: var(--secondary-color);
+    opacity: 1;
+    transform: translateY(-3px);
   }
 `;
 
 const ProjectDescription = styled.p`
   color: var(--text-secondary);
-  font-size: 1rem;
-  line-height: 1.6;
-  margin-bottom: 20px;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin-bottom: 25px;
 `;
 
 const TechList = styled.ul`
@@ -67,16 +86,19 @@ const TechList = styled.ul`
 `;
 
 const TechItem = styled.li`
-  margin-right: 15px;
-  margin-bottom: 5px;
+  margin-right: 18px;
+  margin-bottom: 8px;
   color: var(--text-secondary);
   font-family: var(--font-mono);
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   white-space: nowrap;
+  position: relative;
+  padding-left: 15px;
   
   &:before {
     content: '▹';
-    margin-right: 5px;
+    position: absolute;
+    left: 0;
     color: var(--secondary-color);
   }
 `;
@@ -87,12 +109,17 @@ const ProjectImage = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  border-radius: var(--border-radius);
+  border-radius: 8px;
   background-image: url(${props => props.src});
   background-size: cover;
   background-position: center;
-  opacity: 0.07;
+  opacity: 0.08;
   z-index: 0;
+  transition: opacity 0.3s ease;
+  
+  ${Card}:hover & {
+    opacity: 0.12;
+  }
 `;
 
 const ProjectContent = styled.div`
@@ -104,10 +131,11 @@ const ProjectContent = styled.div`
 `;
 
 const ProjectDate = styled.div`
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: var(--secondary-color);
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   font-family: var(--font-mono);
+  opacity: 0.9;
 `;
 
 const ProjectCard = ({ project }) => {

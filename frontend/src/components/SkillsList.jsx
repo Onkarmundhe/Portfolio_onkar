@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 
 const SkillsContainer = styled.div`
-  margin-bottom: 50px;
+  margin-bottom: 1px;
 `;
 
 const CategoryTitle = styled.h3`
@@ -123,7 +123,6 @@ const SkillsList = ({ skillsByCategory }) => {
     <div>
       {Object.entries(skillsByCategory).map(([category, skills]) => (
         <SkillsContainer key={category}>
-          <CategoryTitle>{category}</CategoryTitle>
           <SkillsGrid
             as={motion.div}
             variants={containerVariants}

@@ -66,7 +66,7 @@ const Footer = () => {
         </SocialLinks>
         
         <Copyright>
-          &copy; {currentYear} | Designed & Built by Data & DevOps Engineer
+          &copy; {currentYear}  Onkar Mundhe | All Rights Reserved
         </Copyright>
       </FooterContent>
     </StyledFooter>

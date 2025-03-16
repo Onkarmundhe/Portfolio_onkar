@@ -3,18 +3,18 @@
   "name": "Data & DevOps Engineer Portfolio",
   "icons": [
     {
-      "src": "assets/app_icon.png",
+      "src": "assets/my_image.jpg",
       "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/png"
+      "type": "image/jpeg"
     },
     {
-      "src": "assets/app_icon.png",
-      "type": "image/png",
+      "src": "assets/my_image.jpg",
+      "type": "image/jpeg",
       "sizes": "192x192"
     },
     {
-      "src": "assets/app_icon.png",
-      "type": "image/png",
+      "src": "assets/my_image.jpg",
+      "type": "image/jpeg",
       "sizes": "512x512"
     }
   ],
