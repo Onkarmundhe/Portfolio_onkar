@@ -78,7 +78,7 @@ const ProficiencyFill = styled.div`
   width: ${props => (props.level / 5) * 100}%;
 `;
 
-const SkillsList = ({ skillsByCategory }) => {
+const SkillsList = ({ skills }) => {
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -101,39 +101,33 @@ const SkillsList = ({ skillsByCategory }) => {
     }
   };
 
-  // Ensure skillsByCategory is an object and not null/undefined
-  if (!skillsByCategory || typeof skillsByCategory !== 'object') {
+  // Ensure skills is an array and not null/undefined
+  if (!Array.isArray(skills)) {
     return null;
   }
   
   return (
-    <div>
-      {Object.entries(skillsByCategory).map(([category, skills]) => (
-        <SkillsContainer key={category}>
-          <SkillsGrid
-            as={motion.div}
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            {Array.isArray(skills) && skills.map(skill => (
-              <SkillCard key={skill.id} variants={itemVariants}>
-                <SkillHeader>
-                  <SkillIcon>
-                    <i className={skill.icon || 'fas fa-code'}></i>
-                  </SkillIcon>
-                  <SkillName>{skill.name}</SkillName>
-                </SkillHeader>
-                <SkillDescription>{skill.description || 'No description available'}</SkillDescription>
-                <ProficiencyBar>
-                  <ProficiencyFill level={skill.proficiency || 0} />
-                </ProficiencyBar>
-              </SkillCard>
-            ))}
-          </SkillsGrid>
-        </SkillsContainer>
+    <SkillsGrid
+      as={motion.div}
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
+      {skills.map(skill => (
+        <SkillCard key={skill.id} variants={itemVariants}>
+          <SkillHeader>
+            <SkillIcon>
+              <i className={skill.icon || 'fas fa-code'}></i>
+            </SkillIcon>
+            <SkillName>{skill.name}</SkillName>
+          </SkillHeader>
+          <SkillDescription>{skill.description || 'No description available'}</SkillDescription>
+          <ProficiencyBar>
+            <ProficiencyFill level={skill.proficiency || 0} />
+          </ProficiencyBar>
+        </SkillCard>
       ))}
-    </div>
+    </SkillsGrid>
   );
 };
 
