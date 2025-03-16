@@ -28,7 +28,7 @@ Experience:
 
 Skills:
 1. Programming Languages: Python, JavaScript, HTML, CSS
-2. DevOps Tools: Git, Docker
+2. DevOps Tools: Git,aws,selenium,deployment on vm
 3. Cloud Technologies: Experience with cloud infrastructure
 4. Data Analysis: Experience with data processing and analysis
 5. Real-time Systems: Knowledge of scheduling algorithms and embedded systems
@@ -47,9 +47,10 @@ Projects:
 3. PDF Summary Generator
    - AI-powered tool for generating concise summaries from PDF documents
    - Uses natural language processing for text extraction and summarization
-   - Technologies: Python, NLP, PDF Processing
+   - Technologies: Python, PDF Processing
 
-Location: Goa, India
+Location: Pune, India
+Hometown: Pune
 Contact: onkarmundhe995@gmail.com
 """
 
