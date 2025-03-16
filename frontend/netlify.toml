@@ -1,6 +1,5 @@
 [build]
-  base = "frontend"
-  command = "CI=false npm run build"
+  command = "npm run build"
   publish = "build"
 
 [[redirects]]
