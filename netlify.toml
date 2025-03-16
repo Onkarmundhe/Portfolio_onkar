@@ -9,4 +9,4 @@
   status = 200
 
 [build.environment]
-  REACT_APP_API_URL = "https://portfolio-backend-qqxe.onrender.com" 
+  REACT_APP_API_URL = "https://portfolio-onkar.onrender.com" 
