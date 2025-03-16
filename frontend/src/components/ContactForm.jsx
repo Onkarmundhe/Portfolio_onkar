@@ -179,7 +179,7 @@ const ContactForm = () => {
     setStatus({ type: '', message: '' });
 
     try {
-      const response = await axios.post('/api/contact/submit', formData);
+      await axios.post('/api/contact/submit', formData);
       setStatus({
         type: 'success',
         message: 'Message sent successfully! I will get back to you soon.'

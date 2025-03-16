@@ -6,24 +6,6 @@ const SkillsContainer = styled.div`
   margin-bottom: 1px;
 `;
 
-const CategoryTitle = styled.h3`
-  color: var(--text-primary);
-  margin-bottom: 20px;
-  font-size: 1.5rem;
-  position: relative;
-  padding-bottom: 10px;
-  
-  &:after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 50px;
-    height: 2px;
-    background-color: var(--secondary-color);
-  }
-`;
-
 const SkillsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
