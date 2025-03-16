@@ -13,16 +13,22 @@ app = FastAPI(
     version="1.0.0",
 )
 
-# Get CORS origins from environment variable
-cors_origins = os.getenv("CORS_ORIGINS", "http://localhost:3000").split(",")
+# Define allowed origins
+origins = [
+    "http://localhost:3000",
+    "https://onkarportfolio11.netlify.app",  # Your Netlify domain
+    "https://portfolio-onkar.onrender.com",  # Your backend domain
+]
 
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=cors_origins,
+    allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
+    expose_headers=["*"],
+    max_age=600,  # Cache preflight requests for 10 minutes
 )
 
 # Include routers

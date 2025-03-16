@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
@@ -7,6 +8,7 @@ import os
 from dotenv import load_dotenv
 import logging
 import json
+from fastapi.responses import JSONResponse
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -26,7 +28,7 @@ class ContactMessage(BaseModel):
 # Google Sheets setup
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 SPREADSHEET_ID = os.getenv('GOOGLE_SHEET_ID')
-RANGE_NAME = 'Sheet1!A:D'  # Assuming columns: Timestamp, Name, Email, Subject, Message
+RANGE_NAME = 'Sheet1!A:E'  # Updated to include all columns
 
 def get_sheets_service():
     try:
@@ -45,6 +47,17 @@ def get_sheets_service():
     except Exception as e:
         logger.error(f"Error setting up Google Sheets service: {str(e)}")
         raise
+
+@router.options("/submit")
+async def options_contact_form():
+    return JSONResponse(
+        content={"message": "OK"},
+        headers={
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "POST, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type",
+        }
+    )
 
 @router.post("/submit")
 async def submit_contact_form(contact_message: ContactMessage):
@@ -76,7 +89,14 @@ async def submit_contact_form(contact_message: ContactMessage):
         ).execute()
         
         logger.info(f"Message saved to Google Sheets: {result}")
-        return {"message": "Message sent successfully!"}
+        return JSONResponse(
+            content={"message": "Message sent successfully!"},
+            headers={
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "POST, OPTIONS",
+                "Access-Control-Allow-Headers": "Content-Type",
+            }
+        )
         
     except Exception as e:
         logger.error(f"Error saving message to Google Sheets: {str(e)}")
