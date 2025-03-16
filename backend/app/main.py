@@ -1,6 +1,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.routes import projects, skills, contact, chatbot
+import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 app = FastAPI(
     title="Portfolio API",
@@ -8,10 +13,13 @@ app = FastAPI(
     version="1.0.0",
 )
 
+# Get CORS origins from environment variable
+cors_origins = os.getenv("CORS_ORIGINS", "http://localhost:3000").split(",")
+
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "https://*.netlify.app", "https://your-custom-domain.com"],
+    allow_origins=cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
