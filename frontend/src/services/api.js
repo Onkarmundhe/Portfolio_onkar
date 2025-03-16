@@ -100,35 +100,12 @@ export const getSkills = async () => {
 export const getSkillsByCategory = async () => {
   try {
     const response = await api.get('/skills/categories');
-    // Format the data to match what the component expects
-    return formatCategoriesData(response.data);
+    return response.data.categories || [];
   } catch (error) {
     console.error('Error fetching skills by category:', error);
     // Fallback to static data if API fails
-    return Promise.resolve(formatStaticCategoriesData());
+    return staticSkillsData.categories;
   }
-};
-
-// Helper function to format categories data
-const formatCategoriesData = (data) => {
-  if (data && data.categories) {
-    // Format data from the /skills/categories endpoint
-    return data.categories.reduce((acc, category) => {
-      acc[category.name] = category.skills;
-      return acc;
-    }, {});
-  } else {
-    // Format data from the /skills/by-category endpoint (added for compatibility)
-    return data;
-  }
-};
-
-// Helper function to format static data
-const formatStaticCategoriesData = () => {
-  return staticSkillsData.categories.reduce((acc, category) => {
-    acc[category.name] = category.skills;
-    return acc;
-  }, {});
 };
 
 // Contact API

@@ -69,7 +69,7 @@ const ErrorMessage = styled.div`
 `;
 
 const Skills = () => {
-  const [skillsByCategory, setSkillsByCategory] = useState({});
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -77,7 +77,7 @@ const Skills = () => {
     const fetchSkills = async () => {
       try {
         const data = await getSkillsByCategory();
-        setSkillsByCategory(data);
+        setCategories(data);
       } catch (error) {
         console.error('Error fetching skills:', error);
         setError('Failed to load skills. Please try again later.');
@@ -116,10 +116,10 @@ const Skills = () => {
         ) : error ? (
           <ErrorMessage>{error}</ErrorMessage>
         ) : (
-          Object.entries(skillsByCategory).map(([category, skills]) => (
-            <CategorySection key={category}>
-              <CategoryTitle>{category}</CategoryTitle>
-              <SkillsList skills={skills} />
+          categories.map(category => (
+            <CategorySection key={category.name}>
+              <CategoryTitle>{category.name}</CategoryTitle>
+              <SkillsList skills={category.skills} />
             </CategorySection>
           ))
         )}
