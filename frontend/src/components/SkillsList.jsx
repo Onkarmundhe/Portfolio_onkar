@@ -100,6 +100,11 @@ const SkillsList = ({ skillsByCategory }) => {
       }
     }
   };
+
+  // Ensure skillsByCategory is an object and not null/undefined
+  if (!skillsByCategory || typeof skillsByCategory !== 'object') {
+    return null;
+  }
   
   return (
     <div>
@@ -111,17 +116,17 @@ const SkillsList = ({ skillsByCategory }) => {
             initial="hidden"
             animate="visible"
           >
-            {skills.map(skill => (
+            {Array.isArray(skills) && skills.map(skill => (
               <SkillCard key={skill.id} variants={itemVariants}>
                 <SkillHeader>
                   <SkillIcon>
-                    <i className={skill.icon}></i>
+                    <i className={skill.icon || 'fas fa-code'}></i>
                   </SkillIcon>
                   <SkillName>{skill.name}</SkillName>
                 </SkillHeader>
-                <SkillDescription>{skill.description}</SkillDescription>
+                <SkillDescription>{skill.description || 'No description available'}</SkillDescription>
                 <ProficiencyBar>
-                  <ProficiencyFill level={skill.proficiency} />
+                  <ProficiencyFill level={skill.proficiency || 0} />
                 </ProficiencyBar>
               </SkillCard>
             ))}
